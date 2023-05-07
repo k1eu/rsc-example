@@ -2,9 +2,17 @@
 
 import { supabase } from "@/db/supabase";
 import { useQuery } from "@tanstack/react-query";
-import AddMessageClient from "./AddMessageClient";
+import AddMessageMixed from "./AddMessageMixed";
 
-const ClientChat = () => {
+const MixedClientChat = ({
+  messages,
+}: {
+  messages: {
+    id: string;
+    author: string;
+    text: string;
+  }[];
+}) => {
   const { data, isLoading } = useQuery({
     queryKey: ["messages"],
     queryFn: async () => {
@@ -17,6 +25,7 @@ const ClientChat = () => {
       };
       return data || [];
     },
+    initialData: messages,
   });
 
   if (isLoading || !data) return <div>Loading...</div>;
@@ -24,10 +33,10 @@ const ClientChat = () => {
   return (
     <div className="flex gap-2">
       <div className="w-96">
-        <h1 className="text-xl">RSC Chat using only server actions</h1>
+        <h1 className="text-xl">RSC Chat using server prepopulation to client</h1>
         <div>
           <h3>Enter your name & message</h3>
-          <AddMessageClient />
+          <AddMessageMixed />
         </div>
       </div>
       <ul className="mt-4">
@@ -44,4 +53,4 @@ const ClientChat = () => {
     </div>
   );
 };
-export default ClientChat;
+export default MixedClientChat;

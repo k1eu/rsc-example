@@ -1,21 +1,26 @@
 "use client";
 import { supabase } from "@/db/supabase";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import React from "react";
 
-const AddMessageClient = () => {
+const AddMessageMixed = () => {
   const { mutateAsync, isLoading } = useMutation({
     mutationFn: async (data: any) => {
       const res = await supabase.from("messages").insert(data);
       return res;
     },
   });
+  const router = useRouter();
 
   const client = useQueryClient();
 
   const ref = React.useRef(null);
 
-  const onSubmit = async (withRevalidate: boolean) => {
+  const onSubmit = async (options: {
+    withRevalidate: boolean;
+    withRevalidateServer: boolean;
+  }) => {
     if (isLoading || !ref.current) return;
 
     // @ts-ignore
@@ -29,10 +34,14 @@ const AddMessageClient = () => {
 
     await mutateAsync([{ author, text }], {
       onSuccess(data, variables, context) {
-        if (withRevalidate) {
+        if (options.withRevalidate) {
           client.invalidateQueries({
             queryKey: ["messages"],
           });
+          return;
+        }
+        if (options.withRevalidateServer) {
+          router.refresh();
           return;
         }
         client.setQueryData(["messages"], (old: any) => [
@@ -64,7 +73,9 @@ const AddMessageClient = () => {
         className="bg-purple-500 text-white p-2 mt-2"
         id="rev"
         type="button"
-        onClick={() => onSubmit(true)}
+        onClick={() =>
+          onSubmit({ withRevalidate: true, withRevalidateServer: false })
+        }
         disabled={isLoading}
       >
         submit with revalidate
@@ -73,13 +84,26 @@ const AddMessageClient = () => {
         className="bg-purple-500 text-white p-2 mt-2"
         id="cache"
         type="button"
-        onClick={() => onSubmit(false)}
+        onClick={() =>
+          onSubmit({ withRevalidate: false, withRevalidateServer: false })
+        }
         disabled={isLoading}
       >
         submit with cache update
+      </button>
+      <button
+        className="bg-purple-500 text-white p-2 mt-2"
+        id="cache"
+        type="button"
+        onClick={() =>
+          onSubmit({ withRevalidate: false, withRevalidateServer: true })
+        }
+        disabled={isLoading}
+      >
+        submit with server revalidate
       </button>
     </form>
   );
 };
 
-export default AddMessageClient;
+export default AddMessageMixed;

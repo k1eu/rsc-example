@@ -15,9 +15,7 @@ const create = async (e: FormData) => {
     .from("messages")
     .insert([{ author: e.get("name"), text: e.get("text") }]);
 
-  console.log({ a });
-
-  revalidatePath("/chat");
+  revalidatePath("/server/chat");
 };
 
 const AddMessage = async () => {

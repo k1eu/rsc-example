@@ -1,3 +1,5 @@
+export const revalidate = 0;
+
 import { supabase } from "@/db/supabase";
 import AddMessage from "@/components/AddMessage";
 import Disclaimer from "@/components/Disclaimer";

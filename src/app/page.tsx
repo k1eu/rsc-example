@@ -22,6 +22,7 @@ export default function Home() {
             Full Server
           </Link>
           <Link
+          
             className="bg-purple-500 p-2 rounded-md text-white"
             href={"/mixed/chat"}
           >
