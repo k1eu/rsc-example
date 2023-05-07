@@ -8,7 +8,7 @@ export default async function Chat() {
   return (
     <>
       <Disclaimer>
-        This page fetches data on the client and updates it too
+        This page fetches data on the server and populates the client
       </Disclaimer>
       {/*@ts-ignore*/}
       <MixedClientChat messages={data} key={Math.random()} />
