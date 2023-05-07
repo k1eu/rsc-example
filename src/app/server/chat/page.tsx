@@ -1,15 +1,16 @@
 export const revalidate = 0;
+export const dynamic = "force-dynamic";
 
 import { supabase } from "@/db/supabase";
 import AddMessage from "@/components/AddMessage";
 import Disclaimer from "@/components/Disclaimer";
 
 export default async function Chat() {
-  let { data } = await supabase.from("messages").select();
+  const { data } = await supabase.from("messages").select();
 
   return (
     <>
-    <Disclaimer>This page is server rendered on request</Disclaimer>
+      <Disclaimer>This page is server rendered on request</Disclaimer>
       <div className="flex gap-2">
         <div className="w-96">
           <h1 className="text-xl">RSC Chat using only server actions</h1>

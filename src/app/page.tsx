@@ -1,4 +1,5 @@
 import Disclaimer from "@/components/Disclaimer";
+import DynamicLink from "@/components/DynamicLink";
 import Link from "next/link";
 
 export default function Home() {
@@ -14,15 +15,14 @@ export default function Home() {
             {" "}
             Full Client
           </Link>
-          <Link
+          <DynamicLink
             className="bg-purple-500 p-2 rounded-md text-white"
             href={"/server/chat"}
           >
             {" "}
             Full Server
-          </Link>
+          </DynamicLink>
           <Link
-          
             className="bg-purple-500 p-2 rounded-md text-white"
             href={"/mixed/chat"}
           >
